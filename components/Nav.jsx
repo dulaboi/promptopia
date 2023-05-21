@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 export default function Nav() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [providers, setProviders] = useState(null);
 
   useEffect(() => {
@@ -22,6 +22,8 @@ export default function Nav() {
 
     setProvidersEffect();
   }, []);
+
+  if (status === "loading") return <div>Loading...</div>;
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
@@ -72,6 +74,7 @@ function MobileNavigation({
             alt="Promptopia Logo"
             width={30}
             height={30}
+            style={{ borderRadius: "50%" }}
             className="object-contain"
             onClick={() => setToggleDropdown((p) => !p)}
           />
