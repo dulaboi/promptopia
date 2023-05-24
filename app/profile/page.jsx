@@ -17,6 +17,7 @@ export default function MyProfile() {
         const data = await res.json();
         setPosts(data);
       }
+      if (session === null) router.push("/");
     }
 
     fetchPosts();
@@ -43,6 +44,8 @@ export default function MyProfile() {
       }
     }
   }
+
+  if (session === undefined) return null;
 
   return (
     <Profile

@@ -7,14 +7,20 @@ import { usePathname, useRouter } from "next/navigation";
 
 export default function PromptCard({
   prompt,
-  handleTagClick,
   handleEdit,
   handleDelete,
+  handleTagClick,
 }) {
   const [copied, setCopied] = useState("");
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
+
+  function goToProfile() {
+    router.push(
+      `/profile/${prompt.creator._id}?name=${prompt.creator.username}`
+    );
+  }
 
   function handleCopy() {
     navigator.clipboard.writeText(prompt.prompt);
@@ -24,7 +30,10 @@ export default function PromptCard({
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
-        <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+        <div
+          className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
+          onClick={goToProfile}
+        >
           <Image
             src={prompt.creator.image}
             alt="user_image"
