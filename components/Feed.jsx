@@ -2,18 +2,26 @@
 
 import { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
+import { search } from "../utils/search";
 
 export default function Feed() {
   const [textSearch, setTextSearch] = useState("");
   const [posts, setPosts] = useState([]);
+  const [displayPosts, setDisplayPosts] = useState([]);
 
-  function handleSearchChange(e) {}
+  function handleSearchChange(e) {
+    const searchText = e.target.value;
+    setTextSearch(searchText);
+    const res = search(posts, searchText);
+    setDisplayPosts(res);
+  }
 
   useEffect(() => {
     async function fetchPosts() {
       const res = await fetch("/api/prompt");
       const data = await res.json();
       setPosts(data);
+      setDisplayPosts(data);
     }
 
     fetchPosts();
@@ -25,13 +33,14 @@ export default function Feed() {
         <input
           type="text"
           placeholder="Search for a tag or a username"
+          value={textSearch}
           onChange={handleSearchChange}
-          required
           className="search_input peer"
+          required
         />
       </form>
 
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      <PromptCardList data={displayPosts} handleTagClick={() => {}} />
     </section>
   );
 }
