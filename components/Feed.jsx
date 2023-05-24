@@ -16,6 +16,12 @@ export default function Feed() {
     setDisplayPosts(res);
   }
 
+  function handleTagClick(tag) {
+    setTextSearch(tag);
+    const res = search(posts, tag);
+    setDisplayPosts(res);
+  }
+
   useEffect(() => {
     async function fetchPosts() {
       const res = await fetch("/api/prompt");
@@ -40,7 +46,7 @@ export default function Feed() {
         />
       </form>
 
-      <PromptCardList data={displayPosts} handleTagClick={() => {}} />
+      <PromptCardList data={displayPosts} handleTagClick={handleTagClick} />
     </section>
   );
 }
@@ -49,7 +55,11 @@ function PromptCardList({ data, handleTagClick }) {
   return (
     <div className="mt-16 prompt_layout">
       {data.map((p) => (
-        <PromptCard key={p._id} prompt={p} handleTagClick={handleTagClick} />
+        <PromptCard
+          key={p._id}
+          prompt={p}
+          handleTagClick={() => handleTagClick(p.tag)}
+        />
       ))}
     </div>
   );
