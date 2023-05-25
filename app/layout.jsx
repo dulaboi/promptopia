@@ -10,6 +10,10 @@ export const metadate = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <header>
+        <title>{metadate.title}</title>
+        <meta name="description" content={metadate.description} />
+      </header>
       <body>
         <Provider>
           <div className="main">
